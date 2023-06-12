@@ -1,5 +1,5 @@
-from typing import Any
 from mesa import Model
+from mesa.time import RandomActivation
 
 
 
@@ -16,6 +16,7 @@ class Kiez(Model):
     def __init__(self,num_persons,num_trash_bins,num_trash,messiness,awareness,view_range) -> None:
         super().__init__()
 
-
-        
         self.num_persons = 30 
+
+        self.schedule = RandomActivation(self)
+
