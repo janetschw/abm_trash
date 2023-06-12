@@ -1,5 +1,5 @@
 import mesa
-from model import Kiez 
+from field import Kiez 
 from person import PersonAgent 
 
 def draw(agent):
@@ -97,9 +97,9 @@ model_params = {
 
 # # initialize the server with the model, parameters and visualization elements set above
 # # give it a name of your choosing
-# server = mesa.visualization.ModularServer(
-#     model_cls=Cyborg,
-#     visualization_elements=[canvas, pop_charts, fertility_charts, life_expectancy_charts],
-#     name="Cyborg Jakarta",
-#     model_params=model_params
-# )
+server = mesa.visualization.ModularServer(
+    model_cls=Kiez,
+    visualization_elements=[canvas],
+    name="Kiez Modell",
+    model_params=model_params
+)
