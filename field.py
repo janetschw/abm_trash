@@ -1,7 +1,8 @@
 from mesa import Model
 from mesa.time import RandomActivation
-
-
+from mesa.space import MultiGrid
+import random 
+from person import PersonAgent
 
 class Kiez(Model):
     num_persons: int
@@ -13,10 +14,46 @@ class Kiez(Model):
     #current_time: int 
     #pickup_time: int 
 
-    def __init__(self,num_persons,num_trash_bins,num_trash,messiness,awareness,view_range) -> None:
+    def __init__(
+            self,
+            num_persons,
+            num_trash_bins,
+            num_trash,
+            messiness,
+            awareness,
+            view_range,
+        ) -> None:
         super().__init__()
 
-        self.num_persons = 30 
+        self.num_persons = num_persons
+        self.num_trash_bins = num_trash_bins
+        self.messiness = messiness
+        self.awareness = awareness
+        self.view_range = view_range
+
+        self.num_persons = 20 
 
         self.schedule = RandomActivation(self)
+        self.grid  = MultiGrid(40, 40, False)
+        
+        self.spawn_persons()
+        self.spawn_trash()
+        self.spawn_trash_bins()
 
+    def spawn_persons(self):
+        for i in range(self.num_persons):
+            new_person = PersonAgent(model=self, unique_id=self.next_id())
+            cell = self.random.choice(list(self.grid.coord_iter()))
+            pos = cell[1:]
+            self.grid.place_agent(new_person,pos)
+            self.schedule.add(new_person)
+
+    def spawn_trash(self):
+        for i in range(self.num_trash_bins):
+            pass
+    
+    def spawn_trash_bins(self):
+        return None 
+
+    def step(self):
+        self.schedule.step()
