@@ -19,4 +19,17 @@ class Kiez(Model):
         self.num_persons = 30 
 
         self.schedule = RandomActivation(self)
+        self.grid = MultiGrid(40, 40, False)
 
+        self.spawn_trash()
+        self.spawn_persons()
+        self.spawn_trash_bins ()
+
+    def spawn_trash():
+        return None 
+    
+    def spawm_persons():
+        return None
+    
+    def spawn_trash_bins():
+        return None
