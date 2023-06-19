@@ -1,6 +1,8 @@
 import mesa
 from field import Kiez 
 from person import PersonAgent 
+from trash import TrashAgent
+from trash_bin import TrashBinAgent
 
 def draw(agent):
     if agent is None:
@@ -10,9 +12,29 @@ def draw(agent):
         return {
             "Color": "blue",
             "Shape": "circle",
-            "Layer": 0,
-            "Filles": "true",
+            "Layer": 1,
+            "Filled": "false",
             "r": 0.5 
+        }
+    
+    if isinstance(agent, TrashAgent):
+        return {
+            "Color": "grey",
+            "Shape": "rect",
+            "Layer": 0,
+            "Filled": "true",
+            "w": 0.5,
+            "h": 0.5
+        }
+    
+    if isinstance(agent, TrashBinAgent):
+        return {
+            "Color": "red",
+            "Shape": "rect",
+            "Layer": 0,
+            "Filled": "true",
+            "w": 1,
+            "h": 1     
         }
     
 canvas = mesa.visualization.CanvasGrid(draw, 40, 40, 600, 600)

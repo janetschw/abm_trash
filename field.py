@@ -3,6 +3,8 @@ from mesa.time import RandomActivation
 from mesa.space import MultiGrid
 import random 
 from person import PersonAgent
+from trash import TrashAgent
+from trash_bin import TrashBinAgent
 
 class Kiez(Model):
     num_persons: int
@@ -30,6 +32,7 @@ class Kiez(Model):
         self.messiness = messiness
         self.awareness = awareness
         self.view_range = view_range
+        self.num_trash = num_trash
 
         self.schedule = RandomActivation(self)
         self.grid = MultiGrid(40, 40, False)
@@ -47,11 +50,20 @@ class Kiez(Model):
             self.schedule.add(new_person)
 
     def spawn_trash(self):
-        for i in range(self.num_trash_bins):
-            pass
+        for i in range(self.num_trash):
+            new_trash = TrashAgent(model=self,unique_id=self.next_id())
+            cell = self.random.choice(list(self.grid.coord_iter()))
+            pos = cell[1:]
+            self.grid.place_agent(new_trash,pos)
+            self.schedule.add(new_trash)
     
     def spawn_trash_bins(self):
-        return None 
+        for i in range(self.num_trash_bins):
+            new_trash_bin = TrashBinAgent(model=self,unique_id=self.next_id())
+            cell = self.random.choice(list(self.grid.coord_iter()))
+            pos = cell[1:]
+            self.grid.place_agent(new_trash_bin,pos)
+            self.schedule.add(new_trash_bin) 
 
     def step(self):
         self.schedule.step()
