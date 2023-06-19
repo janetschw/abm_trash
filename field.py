@@ -31,8 +31,6 @@ class Kiez(Model):
         self.awareness = awareness
         self.view_range = view_range
 
-        self.num_persons = 20 
-
         self.schedule = RandomActivation(self)
         self.grid = MultiGrid(40, 40, False)
         
