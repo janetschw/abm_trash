@@ -43,9 +43,9 @@ class Kiez(Model):
 
     def spawn_persons(self):
         for i in range(self.num_persons):
-            new_person = PersonAgent(model=self, unique_id=self.next_id())
             cell = self.random.choice(list(self.grid.coord_iter()))
             pos = cell[1:]
+            new_person = PersonAgent(model=self, unique_id=self.next_id(),pos=pos)
             self.grid.place_agent(new_person,pos)
             self.schedule.add(new_person)
 
