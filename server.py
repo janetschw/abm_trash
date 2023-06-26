@@ -9,8 +9,13 @@ def draw(agent):
         return 
     
     if isinstance(agent, PersonAgent):
+        color = "#57F828"
+        if agent.trash > 0:
+            color = "#F6DA30"
+        if agent.frustration > agent.awareness:
+            color = "#F53334"
         return {
-            "Color": "blue",
+            "Color": color,
             "Shape": "circle",
             "Layer": 1,
             "Filled": "false",

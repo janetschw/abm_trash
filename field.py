@@ -45,7 +45,8 @@ class Kiez(Model):
         for i in range(self.num_persons):
             cell = self.random.choice(list(self.grid.coord_iter()))
             pos = cell[1:]
-            new_person = PersonAgent(model=self, unique_id=self.next_id(),pos=pos)
+            new_person = PersonAgent(model=self, unique_id=self.next_id(), pos=pos,
+                                     view_range=self.view_range, awareness=self.awareness, messiness=self.messiness)
             self.grid.place_agent(new_person,pos)
             self.schedule.add(new_person)
 
@@ -55,7 +56,6 @@ class Kiez(Model):
             cell = self.random.choice(list(self.grid.coord_iter()))
             pos = cell[1:]
             self.grid.place_agent(new_trash,pos)
-            self.schedule.add(new_trash)
     
     def spawn_trash_bins(self):
         for i in range(self.num_trash_bins):
