@@ -77,11 +77,14 @@ class PersonAgent(Agent):
                 if isinstance(agentneighbor, TrashAgent):
                     self.model.grid.remove_agent(agentneighbor)
                     self.trash += 1
+                    self.model.total_trash -= 1
 
     def drop_trash(self):
         if self.trash > 0 and self.frustration > self.awareness:
-            new_trash = TrashAgent(model=self.model, unique_id=self.model.next_id())
-            self.model.grid.place_agent(new_trash, self.pos)
+            for i in range(self.trash):
+                new_trash = TrashAgent(model=self.model, unique_id=self.model.next_id())
+                self.model.grid.place_agent(new_trash, self.pos)
+                self.model.total_trash += 1
             self.trash = 0
             self.frustration = 0
 

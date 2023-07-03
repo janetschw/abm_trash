@@ -25,7 +25,7 @@ def draw(agent):
     
     if isinstance(agent, TrashAgent):
         return {
-            "Color": "grey",
+            "Color": "rgba(0,0,0,0.1)",
             "Shape": "rect",
             "Layer": 0,
             "Filled": "true",
@@ -34,18 +34,25 @@ def draw(agent):
         }
     
     if isinstance(agent, TrashBinAgent):
+        text_color = "#57F828"
+        if agent.trash >= 0.8 * agent.capacity:
+            text_color = "#F6DA30"
+        if agent.trash >= agent.capacity:
+            text_color = "black"
         return {
             "Color": "red",
             "Shape": "rect",
             "Layer": 0,
             "Filled": "true",
             "w": 1,
-            "h": 1     
+            "h": 1,
+            "text": (agent.trash, agent.capacity)[agent.trash >= agent.capacity],
+            "text_color": text_color
         }
     
     if isinstance(agent, PubAgent):
         return {
-            "Color": "black",
+            "Color": "rgba(0,0,0,0.1)",
             "Shape": "rect",
             "Layer": 0,
             "Filled": "true",
@@ -61,8 +68,16 @@ model_params = {
     "num_trash_bins": mesa.visualization.Slider ("num_trash_bins", 5, 0, 20, 1),
     "messiness": mesa.visualization.Slider ("messiness", 5, 0, 10, 1),
     "awareness": mesa.visualization.Slider ("awareness", 5, 0, 10, 1),
-    "view_range": mesa.visualization.Slider ("view_range", 5, 0, 10, 1)
+    "view_range": mesa.visualization.Slider ("view_range", 5, 0, 10, 1),
+    "trash_bin_capacity": mesa.visualization.Slider("trash_bin_capacity", 20, 5, 50, 1),
+    "pickup_interval": mesa.visualization.Slider("pickup_interval", 30, 5, 50, 1)
 }
+
+# set charts to visualize the development of the model
+# "Label" must correspond to a model_reporter set in model.py
+trash_charts = mesa.visualization.ChartModule([
+    {"Label": "Littering", "Color": "grey"}
+])
 
 # # function that is called every step for every field and every agent to decide how it should be displayed
 # def draw(agent):
@@ -112,18 +127,6 @@ model_params = {
 # # initialize the canvas to draw on with a size in fields and pixels
 # canvas = mesa.visualization.CanvasGrid(draw, 40, 40, 600, 600)
 
-# # set charts to visualize the development of the model
-# # "Label" must correspond to a model_reporter set in model.py
-# pop_charts = mesa.visualization.ChartModule([
-#     {"Label": "Mangroves", "Color": "green"}
-# ])
-# fertility_charts = mesa.visualization.ChartModule([
-#     {"Label": "Avg. Mangrove Fertility", "Color": "purple"}
-# ])
-# life_expectancy_charts = mesa.visualization.ChartModule([
-#     {"Label": "Avg. Mangrove Life Expectancy", "Color": "blue"}
-# ])
-
 # # Sliders for modifiying parameters going into the model
 # # parameters must be defined in the constructor of the model
 # # those will overwrite the defaults set in the model constructor
@@ -138,7 +141,7 @@ model_params = {
 # # give it a name of your choosing
 server = mesa.visualization.ModularServer(
     model_cls=Kiez,
-    visualization_elements=[canvas],
+    visualization_elements=[canvas, trash_charts],
     name="Kiez Modell",
     model_params=model_params
 )
