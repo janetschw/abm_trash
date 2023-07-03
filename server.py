@@ -3,6 +3,7 @@ from field import Kiez
 from person import PersonAgent 
 from trash import TrashAgent
 from trash_bin import TrashBinAgent
+from pub import PubAgent
 
 def draw(agent):
     if agent is None:
@@ -41,6 +42,17 @@ def draw(agent):
             "w": 1,
             "h": 1     
         }
+    
+    if isinstance(agent, PubAgent):
+        return {
+            "Color": "black",
+            "Shape": "rect",
+            "Layer": 0,
+            "Filled": "true",
+            "w": 1,
+            "h": 1
+        }
+    
     
 canvas = mesa.visualization.CanvasGrid(draw, 40, 40, 600, 600)
 model_params = {
