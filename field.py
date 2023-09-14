@@ -5,6 +5,8 @@ from person import PersonAgent
 from trash import TrashAgent
 from trash_bin import TrashBinAgent
 
+#Alle benötigten Daten werden ins Feld importiert damit alles vom Programm gelesen und verstanden werden kann  
+
 class Kiez(Model):
     grid: MultiGrid
     num_persons: int
@@ -27,6 +29,8 @@ class Kiez(Model):
             pickup_interval
         ) -> None:
         super().__init__()
+
+            #alle parameter werden festgelegt
 
         self.num_persons = num_persons
         self.num_trash_bins = num_trash_bins
@@ -54,6 +58,10 @@ class Kiez(Model):
 
     # description: places a number of persons on the field randomly
     # parameters: self.num_persons
+
+    #Hier werden nach und nach alle Agenten auf dem Grid/Feld gespawnt
+    # 1. die Personen personagents werden an random orten gespawnt 
+    
     def spawn_persons(self):
         for i in range(self.num_persons):
             cell = self.random.choice(list(self.grid.coord_iter()))
@@ -62,7 +70,9 @@ class Kiez(Model):
                                      view_range=self.view_range, awareness=self.awareness, messiness=self.messiness)
             self.grid.place_agent(new_person,pos)
             self.schedule.add(new_person)
-
+            
+    # 2. Der Müll der zu Beginn rum liegt wird an random orten gespawnt 
+    
     def spawn_trash(self):
         for i in range(self.num_trash):
             new_trash = TrashAgent(model=self,unique_id=self.next_id())
@@ -70,6 +80,8 @@ class Kiez(Model):
             pos = cell[1:]
             self.grid.place_agent(new_trash,pos)
             self.total_trash += 1
+
+    # 3. Die Mülleimer werden an random orten gespawnt 
     
     def spawn_trash_bins(self):
         for i in range(self.num_trash_bins):
@@ -79,7 +91,9 @@ class Kiez(Model):
                                           capacity = self.trash_bin_capacity, pickup_interval=self.pickup_interval, pos = pos)
             self.grid.place_agent(new_trash_bin,pos)
             self.schedule.add(new_trash_bin) 
-
+            
+    # Der einzelne Zeitschritt
+    
     def step(self):
         self.schedule.step()
         self.datacollector.collect(self)
