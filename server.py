@@ -5,11 +5,13 @@ from trash import TrashAgent
 from trash_bin import TrashBinAgent
 from pub import PubAgent
 
+# Wie sehen unsere verschiedenen Agenten aus
+
 def draw(agent):
     if agent is None:
         return 
     
-    if isinstance(agent, PersonAgent):
+    if isinstance(agent, PersonAgent): # der Agent ist eine Person
         color = "#57F828"
         if agent.trash > 0:
             color = "#F6DA30"
@@ -17,15 +19,15 @@ def draw(agent):
             color = "#F53334"
         return {
             "Color": color,
-            "Shape": "circle",
-            "Layer": 1,
-            "Filled": "false",
-            "r": 0.5 
+            "Shape": "circle", # Form des Agenten
+            "Layer": 1,        # Auf welcher Ebene bewegt sich dieser
+            "Filled": "false", # Ist die Form des Agenten gefüllt oder nicht?
+            "r": 0.5           # Größe des Agenten 
         }
     
-    if isinstance(agent, TrashAgent):
+    if isinstance(agent, TrashAgent): # Der Agent ist der Müll 
         return {
-            "Color": "rgba(0,0,0,0.1)",
+            "Color": "rgba(0,0,0,0.1)",   # Farbcode
             "Shape": "rect",
             "Layer": 0,
             "Filled": "true",
@@ -33,7 +35,7 @@ def draw(agent):
             "h": 0.5
         }
     
-    if isinstance(agent, TrashBinAgent):
+    if isinstance(agent, TrashBinAgent): # Der Agent ist der Mülleimer
         text_color = "#57F828"
         if agent.trash >= 0.8 * agent.capacity:
             text_color = "#F6DA30"
@@ -50,7 +52,7 @@ def draw(agent):
             "text_color": text_color
         }
     
-    if isinstance(agent, PubAgent):
+    if isinstance(agent, PubAgent): # Der Agent ist der Pub/Laden
         return {
             "Color": "rgba(0,0,0,0.1)",
             "Shape": "rect",
