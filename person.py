@@ -4,6 +4,8 @@ from trash_bin import TrashBinAgent
 from trash import TrashAgent
 from pub import PubAgent
 
+# Hier werden die Personen (Person agents) definiert die in unserem Modell rumlaufen und welche aktionen diese ausführen 
+
 class PersonAgent(Agent):
     def __init__(self, unique_id: int, model: Model, pos, view_range, awareness, messiness) -> None:
         super().__init__(unique_id, model)
@@ -16,6 +18,9 @@ class PersonAgent(Agent):
         self.destination = None
         self.dest_is_trash_bin = False
 
+    # Dies sind alles die Eigenschaften die der/die Agent haben soll 
+
+    #In den nachfolgenden Zeilen wird definiert wie genau sich ein Agent bewegt und wie er seine Strecke bestimmt 
     def move(self):
         if self.destination is None:
             self.pick_random_destination()
@@ -55,7 +60,8 @@ class PersonAgent(Agent):
         self.dispose_trash()
         self.am_i_there()
         
-
+     # Was passiert wenn Müll (trash) entdeckt wird 
+    
     def spot_trash_bins(self):
         if self.trash > 0:
             neighbors = self.model.grid.get_neighbors(
@@ -68,6 +74,8 @@ class PersonAgent(Agent):
                     self.dest_is_trash_bin = True
                     break
 
+    #Hier wird progammiert was passiert wenn der Müll aufgesammlet wird in dem Moment wenn ein Agent an diesem vorbei oder drüber läuft
+    
     def collect_trash(self):
         if self.awareness > self.random.randint(0,10):
             neighbors = self.model.grid.get_neighbors(
@@ -79,6 +87,8 @@ class PersonAgent(Agent):
                     self.trash += 1
                     self.model.total_trash -= 1
 
+    # Wann lässt der Agent seinen Müll fallen?
+    
     def drop_trash(self):
         if self.trash > 0 and self.frustration > self.awareness:
             for i in range(self.trash):
@@ -105,12 +115,16 @@ class PersonAgent(Agent):
                     self.destination = None
                     self.dest_is_trash_bin = False
 
+    # Wie bewegt sich der GAnt und wie wählt er sin Ziel?
+    
     def pick_random_destination(self):
         cell = self.random.choice(list(self.model.grid.coord_iter()))
         pos = cell[1:]
         self.destination = pos
         self.dest_is_trash_bin = False
 
+    # Der Agent überprüft an welcher stelle er sich befindet
+    
     def am_i_there(self):
         if self.pos == self.destination:
             self.destination = None
