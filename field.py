@@ -6,7 +6,7 @@ from trash import TrashAgent
 from trash_bin import TrashBinAgent
 
 #Alle benötigten Daten werden ins Feld importiert damit alles vom Programm gelesen und verstanden werden kann  
-
+#von isabelle: from pub import PubAgent
 class Kiez(Model):
     grid: MultiGrid
     num_persons: int
@@ -16,7 +16,7 @@ class Kiez(Model):
     awareness: int
     view_range: int 
     total_trash: int
-
+#von isabelle: num_pub: int 
     def __init__(
             self,
             num_persons,
@@ -31,7 +31,7 @@ class Kiez(Model):
         super().__init__()
 
             #alle parameter werden festgelegt
-
+#von isabelle: def__int__ um auch die Attribute des pubs zu initialisieren also num_pubs,pub_trash_capacity,pub_person_capacity, neue attribut für person_agents bsp. trinklust welche random festgelegt werden sollen und wahrscheinlichkeit der destination zum pubagent beeinflusst 
         self.num_persons = num_persons
         self.num_trash_bins = num_trash_bins
         self.messiness = messiness
@@ -91,7 +91,7 @@ class Kiez(Model):
                                           capacity = self.trash_bin_capacity, pickup_interval=self.pickup_interval, pos = pos)
             self.grid.place_agent(new_trash_bin,pos)
             self.schedule.add(new_trash_bin) 
-            
+#isabelle: spawn_pub(self): for i in range(self.num_pub): cell = nicht random, pos = cell[3:4]        
     # Der einzelne Zeitschritt
     
     def step(self):
